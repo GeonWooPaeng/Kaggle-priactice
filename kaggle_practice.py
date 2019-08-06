@@ -291,7 +291,7 @@ test = test.drop(features_drop, axis=1)
 train = train.drop(['PassengerId'],axis=1)
 
 #%%
-train_data = train.drop('Survived',axis=1)
+train_data = train.drop('Survived', axis=1)
 target = train['Survived']
 
 train_data.shape, target.shape
@@ -299,5 +299,96 @@ train_data.shape, target.shape
 
 #%%
 train_data.head(10)
+
+#%%
+#Modeling
+#Importing Classifier Modules
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier 
+from sklearn.naive_bayes import GaussianNB 
+from sklearn.svm import SVC 
+
+import numpy as np 
+
+
+#%%
+train.info()
+
+#%%
+#Cross Validation(K-fold)
+from sklearn.model_selection import KFold 
+from sklearn.model_selection import cross_val_score 
+k_fold = KFold(n_splits=10,shuffle=True,random_state=0)
+
+#%%
+#kNN
+clf = KNeighborsClassifier(n_neighbors = 13)
+scoring = 'accuracy'
+score = cross_val_score(clf, train_data, target, cv=k_fold, n_jobs=1, scoring=scoring)
+print(score)
+
+#%%
+round(np.mean(score)*100,2)
+
+
+#%%
+#Decision Tree
+clf = DecisionTreeClassifier()
+scoring = 'accuracy'
+score = cross_val_score(clf, train_data, target, cv=k_fold, n_jobs=1, scoring=scoring)
+
+#%%
+#decision tree score
+round(np.mean(score)*100,2)
+
+#%%
+#Random Forest
+clf = RandomForestClassifier(n_estimators=13)
+scoring = 'accuracy'
+score = cross_val_score(clf, train_data, target, cv=k_fold, n_jobs=1, scoring=scoring)
+print(score)
+
+#%%
+#Random Forest Score
+round(np.mean(score)*100,2)
+
+#%%
+#Naive Bayes
+clf = GaussianNB()
+scoring = 'accuracy'
+score = cross_val_score(clf, train_data, target, cv=k_fold, n_jobs=1, scoring=scoring)
+pring(score)
+
+#%%
+#Naive Bayes Scores
+round(np.mean(score)*100,2)
+
+#%%
+#SVM
+clf = SCV()
+scoring='accuracy'
+score = cross_val_score(clf, train_data, target, cv=k_fold, n_jobs=1, scoring=scoring)
+pring(score)
+
+#%%
+round(np.mean(score)*100,2)
+
+#%%
+#Testing
+clf = SVC()
+clf.fit(train_data, target)
+
+test_data = test.drop("PassengerId", axis=1).copy()
+prediction = clf.predict(test_data)
+
+
+#%%
+submission = pd.DataFrame({"PassengerId":test["PassengerId"],"Survived":prediction})
+submission.to_csv('submission.csv',index=False)
+
+#%%
+submission = pd.read_csv('submission.csv')
+submission.head()
 
 #%%
