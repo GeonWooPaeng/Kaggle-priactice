@@ -24,19 +24,19 @@ test.info()
 
 #%%
 train.isnull().sum()
-#ë¹ ì§„ë¶€ë¶„ í‘œì‹œ
+#ºüÁøºÎºĞ Ç¥½Ã
 #%%
 test.isnull().sum()
 
 #%%
-import matplotlib.pyplot as plt
-%matplotlib inline 
-import seaborn as sns 
-sns.set()
+import matplotlib.pyplot as plt - 
+%matplotlib inline #³ëÆ®ºÏ ³»ºÎ¿¡ ±×¸²À» Ç¥½ÃÇÏµµ·Ï ÁöÁ¤
+import seaborn as sns #´Ù¾çÇÑ »ö»ó Å×¸¶¿Í Åë°è¿ëÂ÷Æ® µîÀÇ ±â´ÉÀ» Ãß°¡ÇÑ ½Ã°¢È­ ÆĞÅ°Áö 
+sns.set() #seaborn ±âº»½ºÅ¸ÀÏ·Î ¹Ù²Û´Ù.
 
 #%%
 def bar_chart(feature):
-    survived = train[train['Survived']==1][feature].value_counts()
+    survived = train[train['Survived']==1][feature].value_counts() #train['Survived']°¡ 1ÀÏ¶§ [feature]ÀÇ ¼ö
     dead = train[train['Survived']==0][feature].value_counts()
     df = pd.DataFrame([survived,dead])
     df.index = ['Survived','Dead']
@@ -65,6 +65,7 @@ train_test_data = [train, test]
 train_test_data = [train,test] #combining train and test dataset
 for dataset in train_test_data:
     dataset['Title'] = dataset['Name'].str.extract(' ([A-Za-z]+)\.',expand=False)
+# extract ÇÔ¼ö³»ÀÇ ¹®ÀÚ¿­ (' ([A-Za-z]+)\.'Àº dataset['Title']ÀÌ´Ù
 
 #%%
 train['Title'].value_counts()
@@ -76,7 +77,7 @@ test['Title'].value_counts()
 title_mapping = {"Mr":0,"Miss":1,"Mrs":2,"Master":3,"Dr":3,"Rev":3,"Col":3,"Major":3,"Mlle":3,"Countess":3,"Ms":3,"Lady":3,"Jonkheer":3,"Don":3,"Mme":3,"Capt":3,"Sir":3 }
 for dataset in train_test_data:
     dataset['Title'] = dataset['Title'].map(title_mapping)
-
+train,test¿¡ ÀÖ´Â µ¥ÀÌÅÍÀÇ 'Title' ºÎºĞÀ» title_mapping ºÎºĞÀ¸·Î ¹Ù²Û´Ù.
 #%%
 train.head()
 
@@ -103,7 +104,7 @@ test.head()
 sex_mapping = {"male":0,"female":1}
 for dataset in train_test_data:
     dataset['Sex'] = dataset['Sex'].map(sex_mapping)
-
+#train,test µ¥ÀÌÅÍ¿¡¼­ 'Sex'ºÎºĞÀ» sex_mapping°ú °°ÀÌ ¼ıÀÚ·Î º¯È¯
 #%%
 bar_chart('Sex')
 
@@ -166,6 +167,7 @@ train.info()
 test.info()
 
 #%%
+# ³ªÀÌ¿¡ µû¶ó ¼ıÀÚ Ç¥±â
 for dataset in train_test_data:
     dataset.loc[dataset['Age']<=16,'Age']=0,
     dataset.loc[(dataset['Age']>16)&(dataset['Age']<=26),'Age']=1,
@@ -191,7 +193,7 @@ df.plot(kind='bar',stacked=True,figsize=(10,5))
 #%%
 for dataset in train_test_data:
     dataset['Embarked'] = dataset['Embarked'].fillna('S')
-
+# 'Embarked'¿¡ 'S'·Î ºó µ¥ÀÌÅÍ Ã¤¿ì±â(fillna)
 #%%
 train.head()
 
@@ -308,7 +310,6 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier 
 from sklearn.naive_bayes import GaussianNB 
 from sklearn.svm import SVC 
-
 
 import numpy as np 
 
